@@ -41,26 +41,34 @@ function App() {
         setMahasiswa(item.data());
         setLogin(true);
       } else {
-        if(window.confirm("Data tidak ditemukan. Membuat akun baru dengan NIM "+nim+"?")===true){
+        if (
+          window.confirm(
+            "Data tidak ditemukan. Membuat akun baru dengan NIM " + nim + "?"
+          ) === true
+        ) {
           setDoc(doc(db, "sampah", nim), mahasiswa);
           setLogin(true);
-        }else{
-          alert("Masukan kembali nim dengan benar!")
+        } else {
+          alert("Masukan kembali nim dengan benar!");
         }
       }
-      
     });
   };
-  const updateData = async (item, newSampah) => {
-    const docRef = doc(db, "sampah", nim);
-    updateDoc(docRef, {
-      sampah: item,
-      report: arrayUnion({
-        date: Timestamp.fromDate(new Date(Date.now())),
-        sampah: newSampah,
-      }),
-    });
-    alert("Berhasil Menambahkan Sampah Terbaru! Ke Akun "+nim)
+  const updateData = async (item, newSampah, count) => {
+    console.log(count);
+    if (count !== 0) {
+      const docRef = doc(db, "sampah", nim);
+      updateDoc(docRef, {
+        sampah: item,
+        report: arrayUnion({
+          date: Timestamp.fromDate(new Date(Date.now())),
+          sampah: newSampah,
+        }),
+      });
+      alert("Berhasil Menambahkan Sampah Terbaru! Ke Akun " + nim);
+    }else{
+      alert("Masukan jumlah sampah terlebih dahulu sebelum melakukan submit!")
+    }
   };
   const handleNim = (e) => {
     setNim(e.target.value);
@@ -68,12 +76,11 @@ function App() {
   };
   const handleLogin = (e) => {
     e.preventDefault();
-    if(nim.length!==9){
-      alert("Masukan 9 Digit Nim dengan Benar!")
-    }else{
+    if (nim.length !== 9) {
+      alert("Masukan 9 Digit Nim dengan Benar!");
+    } else {
       getData();
     }
-    
   };
   const handleLogout = (e) => {
     e.preventDefault();
@@ -94,9 +101,7 @@ function App() {
         makanan: 0,
         kendaraan: 0,
       },
-    }
-    
-    );
+    });
     setNim("");
   };
 
@@ -110,7 +115,7 @@ function App() {
     <div className="app">
       {login ? (
         <Home
-        handleLogout={handleLogout}
+          handleLogout={handleLogout}
           updateData={updateData}
           handleMahasiswaChanged={handleMahasiswaChanged}
           mahasiswa={mahasiswa}
