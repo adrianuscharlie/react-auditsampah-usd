@@ -51,7 +51,7 @@ export default function Home(props) {
     let newSampah = { ...sampah };
     var count=0;
     Object.keys(sampah).forEach((item) => {
-      if (sampah[item] !== 0) {
+      if (sampah[item] !== 0 && !isNaN(sampah[item])) {
         newMahasiswa.sampah[item] = newMahasiswa.sampah[item] + sampah[item];
         sampah[item] = 0;
         count+=1;
